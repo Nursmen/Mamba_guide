@@ -1,9 +1,9 @@
 body
 {
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family:  "Onest", serif;
     margin: 0vh 12vw;
     font-size: 20px;
-    line-height: 1.2;
+    line-height: 1.5;
     background-color: #222831;
     color: #EEEEEE;
 }
@@ -32,6 +32,17 @@ h2
 a {
     font-weight: bold;
     
+}
+
+center
+{
+    font-size: 12px;
+    margin: 5vh 0vh;
+}
+
+center img
+{
+    margin-bottom: 5px;
 }
 
 span.green 
