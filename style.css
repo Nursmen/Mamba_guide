@@ -6,6 +6,7 @@ body
     line-height: 1.5;
     background-color: #222831;
     color: #EEEEEE;
+    padding-bottom: 5vh;
 }
 
 .top h1 
@@ -29,6 +30,11 @@ h2
     font-size: 40px;
 }
 
+h2::after{
+    content: "\a";
+    white-space: pre;
+}
+
 a {
     font-weight: bold;
     
@@ -43,6 +49,8 @@ center
 center img
 {
     margin-bottom: 5px;
+    max-height: 70vh;
+    max-width: 70vw;
 }
 
 span.green 
@@ -77,13 +85,13 @@ a
 .crop {
     margin: 0vh 100vh 0vh -12vw;
     width: 100vw;
-    height: 40vh;
+    height: 35vh;
     overflow: hidden;
     z-index: 1;
 }
 
 .crop img {
     display: block;
-    margin: -30% 0px 0px 0px;
+    margin: -31% 0px 0px 0px;
     filter: brightness(40%);
 }

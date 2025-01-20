@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Mamba</title>
+        <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">  
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Funnel+Display:wght@300..800&family=Onest:wght@100..900&display=swap" rel="stylesheet">
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    </head>
+<body>
+    <div class="home">
+        <a href="index.html">Home/</a>
+    </div>
+    <h1>RNNs and SSMs</h1>
+
+    <p>
+        And of course, we starting with RNNs and SSMs. I will assume you know what neural network is, and how to compute 
+        output of the network. This way of computing called <span class="green">parallel computation</span>.
+        Why? Because you can treat your inputs like dough you put into the oven. Just put everything you have in and GPU 
+        will return you the result. You don't give a damn about the order.
+        <br><br>
+        In other hand we have <span class="red">sequential computation</span>. Before putting new input, you should 
+        patiently wait for the previous input. Of course you have some adventages, like processing one piece of data much easier
+        when you use model for sequential computation. And there is a way to make it parallel, keeping benefits, but shhhhh... I'll show you this trick later.
+    </p>
+
+    <br>
+    <h2>RNNs</h2>
+    <br>
+
+    <p>
+        One type of animals in this jungle is Reccurent Neural Network. It is a whole class of networks, so they come in different forms (e.g. LSTM, GRU).
+        RNNs are like monkeys, they come in many different shapes and sizes. But main idea is:
+    </p>
+
+    <center>
+        <img src="img/ssm1.png" alt="mamba picture">
+        <p>
+            Awful painting by Nursultan
+        </p>
+
+    </center>
+
+    <p>
+        In this picture I tried to show the RNN logic. The first output y0 
+        is computed as empty hidden state (zero) plus first input. With y0 we 
+        calculate first hidden state (h). Then that hidden state will be
+        added to second input to calculate y1. As you see 
+        we actually just add hidden state to input and don't overthink it.
+    </p>
+
+    <br>
+    <h2>SSMs</h2>   
+    <br>
+
+    <p>
+        SSMs are conceptually related to RNNs, but different. You can think of 
+        them as a monkey and a person. SSMs are superior to RNNs, but still have a lot in common.
+        Our formula is:
+        <br><br>
+        \[ x′(t)​=Ax(t)+Bu(t) \]
+        \[ y(t)=Cx(t)+Du(t)\]
+        <br><br>
+        I know it is painful. But now  <span class="red">\(u\) is our input and \(x(t)\) is our hidden_state</span>.
+         You get used to it. 
+         <br>
+        <br>
+         <span class="">\(x′(t)\) is a new hidden_state</span> for the next input. 
+         <br><br>
+        \(A,B,C,D\) are out matrices (weights). Just like \(W\) in a linear layer.
+        <br><br>
+        You see the first, original version of SSM and we will just modify it for the rest of the course.
+    </p>
+
+    <center>
+        <img src="img/ssm2.png" alt="mamba picture">
+
+    </center>
+    <center>
+        <img src="img/ssm3.png" alt="mamba picture">
+        <p>
+            Awful paintings by Nursultan
+        </p>
+
+    </center>
+
+    <p>
+        See? RNNs and SSMs are very alike, but still different. Isn't it a beauty of a nature? 
+        <br>
+        We still need to make one adjustment. Now our SSM is <span class="red">time invarient</span>. It means
+        models behavior doesn't change with time. If I provide same input to the model at different times, it will always produce the same output.
+        <span class="green">Minus aura. </span> To make it time-vatient we just make A,B,C and D depend on time. Congratulations! You finished the first shapter!
+        <br><br>
+        \[ x_{t+1} = A_tx_t + B_tu_t \]
+        \[ y_t = C_tx_t + D_tu_t\]
+    </p>
+    
+    <br>
+    <h2>
+        References
+    </h2>
+    <br>
+
+    <p>
+        SSMs - Aaron R. VOELKER and Chris ELIASMITH <a href="https://compneuro.uwaterloo.ca/files/publications/voelker.2018.pdf">"Improving Spiking Dynamical Networks: Accurate Delays, Higher-Order Synapses, and Time Cells"</a>
+    </p>
+
+    
+    <br>
+    <h2>
+        Code part
+    </h2>
+    <br>
+
+    <pre><code>
+        class SimpleRNN(nn.Module):
+            def __init__(self, input_size, output_size):
+                super(SimpleRNN, self).__init__()
+                self.hidden_size = output_size 
+                self.rnn = nn.RNN(input_size, self.hidden_size, batch_first=True)
+            
+            def forward(self, x, h0=None):
+                if h0 is None:
+                    h0 = torch.zeros(1, x.size(0), self.hidden_size).to(x.device)  
+                out, _ = self.rnn(x, h0)
+                return out
+    </code></pre>
+
+</body>
+</html>
