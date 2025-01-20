@@ -1,5 +1,6 @@
 body
 {
+    overflow-x: hidden;
     font-family:  "Onest", serif;
     margin: 0vh 12vw;
     font-size: 20px;
